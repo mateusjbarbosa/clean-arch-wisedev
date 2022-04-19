@@ -5,6 +5,7 @@
     "node": ">=16.14.2"
   },
   "scripts": {
+    "lint": "eslint --ext .ts ./src ./tests --fix",
     "test": "jest"
   },
   "author": "Mateus José Barbosa / Otávio Lemos",
