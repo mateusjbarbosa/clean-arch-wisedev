@@ -1,5 +1,7 @@
 export class UserAlreadyExistsError extends Error {
-  constructor () {
-    super('User already exists')
+  public readonly name = 'UserAlreadyExistsError'
+
+  constructor (email: string) {
+    super(`User with email ${email} already exists`)
   }
 }

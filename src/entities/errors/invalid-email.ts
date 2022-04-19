@@ -1,5 +1,7 @@
 export class InvalidEmailError extends Error {
-  constructor () {
-    super('Invalid email')
+  public readonly name = 'InvalidEmailError'
+
+  constructor (email: string) {
+    super(`Invalid email: ${email}`)
   }
 }

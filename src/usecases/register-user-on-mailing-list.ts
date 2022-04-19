@@ -6,6 +6,8 @@ import { Either, left, right } from '../shared/either'
 import { UserAlreadyExistsError } from './errors/user-already-exists'
 import { UserRepository } from './ports/user-repository'
 
+type UsecaseReturnType = Promise<Either<InvalidNameError | InvalidEmailError | UserAlreadyExistsError, UserData>>
+
 export class RegisterUserOnMailingListUsecase {
   private readonly repository: UserRepository
 
@@ -13,7 +15,7 @@ export class RegisterUserOnMailingListUsecase {
     this.repository = repository
   }
 
-  async perform (userData: UserData): Promise<Either<InvalidNameError | InvalidEmailError, UserData>> {
+  async perform (userData: UserData): UsecaseReturnType {
     const userOrError: Either<InvalidNameError | InvalidEmailError, User> = User.create(userData)
 
     if (userOrError.isLeft()) {
@@ -23,7 +25,7 @@ export class RegisterUserOnMailingListUsecase {
     const userExists = await this.repository.findByEmail(userData.email)
 
     if (userExists) {
-      return left(new UserAlreadyExistsError())
+      return left(new UserAlreadyExistsError(userData.email))
     }
 
     await this.repository.add(userData)
