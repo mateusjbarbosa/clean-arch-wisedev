@@ -1,8 +1,8 @@
-import { User, UserData } from '../entities'
-import { InvalidEmailError, InvalidNameError } from '../entities/errors'
-import { Either, left, right } from '../shared'
-import { UserAlreadyExistsError } from './errors'
-import { UserRepository } from './ports'
+import { User, UserData } from '@/entities'
+import { InvalidEmailError, InvalidNameError } from '@/entities/errors'
+import { Either, left, right } from '@/shared'
+import { UserAlreadyExistsError } from '@/usecases/errors'
+import { UserRepository } from '@/usecases/ports'
 
 type UsecaseReturnType = Promise<Either<InvalidNameError | InvalidEmailError | UserAlreadyExistsError, UserData>>
 

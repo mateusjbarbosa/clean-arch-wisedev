@@ -1,4 +1,4 @@
-import { Email } from '../../../src/entities/value-objects'
+import { Email } from '@/entities/value-objects'
 
 describe('Email validation', () => {
   it('should accept valid email', () => {
