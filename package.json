@@ -1,0 +1,12 @@
+{
+  "name": "arquitetura-limpa",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=16.14.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mateus José Barbosa / Otávio Lemos",
+  "license": "UNLICENSED"
+}
