@@ -1,8 +1,4 @@
-import { InvalidEmailError } from '../../../src/entities/errors/invalid-email'
-import { InvalidNameError } from '../../../src/entities/errors/invalid-name'
 import { UserData } from '../../../src/entities/user-data'
-import { left } from '../../../src/shared/either'
-import { UserAlreadyExistsError } from '../../../src/usecases/errors/user-already-exists'
 import { UserRepository } from '../../../src/usecases/ports/user-repository'
 import { RegisterUserOnMailingListUsecase } from '../../../src/usecases/register-user-on-mailing-list'
 import { InMemoryUserRepository } from '../../../src/usecases/repository/in-memory-user-repository'
@@ -33,12 +29,11 @@ describe('Register user on mailing list usecase', () => {
     const name = 'J'
     const email = 'john_doe@email.com'
 
-    const response = await usecase.perform({ name, email })
+    const response = (await usecase.perform({ name, email })).value as Error
     const user = await repository.findByEmail(email)
 
     expect(user).toBeNull()
-    expect(response.isLeft()).toBeTruthy()
-    expect(response).toEqual(left(new InvalidNameError()))
+    expect(response.name).toBe('InvalidNameError')
   })
 
   it('should not add user with invalid email', async () => {
@@ -49,12 +44,11 @@ describe('Register user on mailing list usecase', () => {
     const name = 'John Doe'
     const email = 'john_doe'
 
-    const response = await usecase.perform({ name, email })
+    const response = (await usecase.perform({ name, email })).value as Error
     const user = await repository.findByEmail(email)
 
     expect(user).toBeNull()
-    expect(response.isLeft()).toBeTruthy()
-    expect(response).toEqual(left(new InvalidEmailError()))
+    expect(response.name).toBe('InvalidEmailError')
   })
 
   it('should not add user if email already register', async () => {
@@ -75,8 +69,8 @@ describe('Register user on mailing list usecase', () => {
     const responseUser1 = await usecase.perform(user1)
     expect(responseUser1.isRight()).toBeTruthy()
 
-    const responseUser2 = await usecase.perform(user2)
-    expect(responseUser2.isLeft()).toBeTruthy()
-    expect(responseUser2).toEqual(left(new UserAlreadyExistsError()))
+    const responseUser2 = (await usecase.perform(user2)).value as Error
+    expect(responseUser2.name).toBe('UserAlreadyExistsError')
+    expect(responseUser2.message).toBe(`User with email ${user2.email} already exists`)
   })
 })

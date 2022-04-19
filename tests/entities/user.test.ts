@@ -1,7 +1,4 @@
-import { InvalidEmailError } from '../../src/entities/errors/invalid-email'
-import { InvalidNameError } from '../../src/entities/errors/invalid-name'
 import { User } from '../../src/entities/user'
-import { left } from '../../src/shared/either'
 
 describe('User domain entity', () => {
   it('should create a user', () => {
@@ -17,22 +14,25 @@ describe('User domain entity', () => {
 
   it('should not create user with invalid email', () => {
     const invalidEmail = 'invalid_email'
-    const error = User.create({ name: 'John Doe', email: invalidEmail })
+    const error = User.create({ name: 'John Doe', email: invalidEmail }).value as Error
 
-    expect(error).toEqual(left(new InvalidEmailError()))
+    expect(error.name).toBe('InvalidEmailError')
+    expect(error.message).toBe(`Invalid email: ${invalidEmail}`)
   })
 
   it('should not create user with invalid name', () => {
     const invalidName = 'J' + ' '.repeat(10)
-    const error = User.create({ name: invalidName, email: 'any@email.com' })
+    const error = User.create({ name: invalidName, email: 'any@email.com' }).value as Error
 
-    expect(error).toEqual(left(new InvalidNameError()))
+    expect(error.name).toBe('InvalidNameError')
+    expect(error.message).toBe(`Invalid name: ${invalidName}`)
   })
 
   it('should not create user with invalid name', () => {
     const invalidName = 'J'.repeat(256)
-    const error = User.create({ name: invalidName, email: 'any@email.com' })
+    const error = User.create({ name: invalidName, email: 'any@email.com' }).value as Error
 
-    expect(error).toEqual(left(new InvalidNameError()))
+    expect(error.name).toBe('InvalidNameError')
+    expect(error.message).toBe(`Invalid name: ${invalidName}`)
   })
 })
