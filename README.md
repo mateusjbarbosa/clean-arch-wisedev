@@ -1,5 +1,9 @@
 # Projeto prático de Arquitetura Limpa
 
+# API Usecases
+- [] Registrar o usuário em uma _mailing list_
+- [] Enviar um e-mail para o usuário registrado
+
 ## Anotações e lembretes
 ---
 Pacotes utilizados no momento de gravação:
