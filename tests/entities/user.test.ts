@@ -6,6 +6,7 @@ describe('User domain entity', () => {
       name: 'John Doe',
       email: 'john_doe@email.com'
     }
+
     const user: User = User.create(userData).value as User
 
     expect(user.name.value).toBe('John Doe')
@@ -20,7 +21,7 @@ describe('User domain entity', () => {
     expect(error.message).toBe(`Invalid email: ${invalidEmail}`)
   })
 
-  it('should not create user with invalid name', () => {
+  it('should not create user with invalid name (minimal length)', () => {
     const invalidName = 'J' + ' '.repeat(10)
     const error = User.create({ name: invalidName, email: 'any@email.com' }).value as Error
 
@@ -28,8 +29,24 @@ describe('User domain entity', () => {
     expect(error.message).toBe(`Invalid name: ${invalidName}`)
   })
 
-  it('should not create user with invalid name', () => {
+  it('should not create user with invalid name (maximum length)', () => {
     const invalidName = 'J'.repeat(256)
+    const error = User.create({ name: invalidName, email: 'any@email.com' }).value as Error
+
+    expect(error.name).toBe('InvalidNameError')
+    expect(error.message).toBe(`Invalid name: ${invalidName}`)
+  })
+
+  it('should not create user with invalid name (null)', () => {
+    const invalidName = null
+    const error = User.create({ name: invalidName, email: 'any@email.com' }).value as Error
+
+    expect(error.name).toBe('InvalidNameError')
+    expect(error.message).toBe(`Invalid name: ${invalidName}`)
+  })
+
+  it('should not create user with invalid name (empty)', () => {
+    const invalidName = ''
     const error = User.create({ name: invalidName, email: 'any@email.com' }).value as Error
 
     expect(error.name).toBe('InvalidNameError')
