@@ -6,7 +6,10 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts ./src ./tests --fix",
-    "test": "jest"
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:unit": "npm run test -- --watch -c jest.unit.config.js",
+    "test:verbose": "jest --passWithNoTests --runInBand"
   },
   "author": "Mateus José Barbosa / Otávio Lemos",
   "license": "UNLICENSED",
