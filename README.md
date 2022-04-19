@@ -2,6 +2,7 @@
 
 # API Usecases
 - Registrar o usuário em uma _mailing list_
+  - nome e e-mail precisam ser válidos
 - Enviar um e-mail para o usuário registrado
 
 ## Anotações e lembretes
