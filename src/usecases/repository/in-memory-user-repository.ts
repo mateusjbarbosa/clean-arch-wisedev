@@ -1,5 +1,5 @@
+import { UserData } from '../../entities/user-data'
 import { UserRepository } from '../ports/user-repository'
-import { UserData } from '../register-user-on-mailing-list/user-data'
 
 export class InMemoryUserRepository implements UserRepository {
   private users: UserData[] = []
