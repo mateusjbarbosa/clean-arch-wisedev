@@ -12,13 +12,11 @@ describe('Register user on mailing list usecase', () => {
     const name = 'John Doe'
     const email = 'john_doe@email.com'
 
-    const response = await usecase.perform({ name, email })
-
+    await usecase.perform({ name, email })
     const user = await repository.findByEmail(email)
 
     expect(user.name).toBe('John Doe')
     expect(user.email).toBe('john_doe@email.com')
-    expect(response.isRight()).toBeTruthy()
   })
 
   it('should not add user with invalid name', async () => {
@@ -66,8 +64,8 @@ describe('Register user on mailing list usecase', () => {
       email: 'same@email.com'
     }
 
-    const responseUser1 = await usecase.perform(user1)
-    expect(responseUser1.isRight()).toBeTruthy()
+    const responseUser1 = (await usecase.perform(user1)).value as UserData
+    expect(responseUser1.email).toBe('same@email.com')
 
     const responseUser2 = (await usecase.perform(user2)).value as Error
     expect(responseUser2.name).toBe('UserAlreadyExistsError')
