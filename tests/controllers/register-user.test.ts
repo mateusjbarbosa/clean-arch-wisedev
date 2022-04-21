@@ -7,6 +7,12 @@ import { InvalidEmailError, InvalidNameError } from '@/entities/errors'
 import { RegisterUserOnMailingListUsecase } from '@/usecases'
 import { Usecase, UserRepository } from '@/usecases/ports'
 
+class ErrorThrowingUsecaseStub implements Usecase {
+  async execute (request: HttpRequest): Promise<void> {
+    throw new Error()
+  }
+}
+
 const makeSut = (): RegisterUserController => {
   const users: UserData[] = []
   const repository: UserRepository = new InMemoryUserRepository(users)
@@ -97,5 +103,20 @@ describe('Register user web controller', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
     expect(response.body.message).toBe('Missing parameter(s) from request: name,email')
+  })
+
+  it('should return a 500 when server raises', async () => {
+    const request: HttpRequest = {
+      body: {
+        name: 'John Doe',
+        email: 'john_doe@email.com'
+      }
+    }
+    const usecase: Usecase = new ErrorThrowingUsecaseStub()
+    const sut: RegisterUserController = new RegisterUserController(usecase)
+    const response: HttpResponse = await sut.handle(request)
+
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toBeInstanceOf(Error)
   })
 })
