@@ -6,11 +6,12 @@ import { UserData } from '@/entities'
 import { InvalidEmailError, InvalidNameError } from '@/entities/errors'
 import { RegisterUserOnMailingListUsecase } from '@/usecases'
 import { UserRepository } from '@/usecases/ports'
+import { Usecase } from '@/usecases/ports/usecase'
 
 const makeSut = (): RegisterUserController => {
   const users: UserData[] = []
   const repository: UserRepository = new InMemoryUserRepository(users)
-  const usecase: RegisterUserOnMailingListUsecase = new RegisterUserOnMailingListUsecase(repository)
+  const usecase: Usecase = new RegisterUserOnMailingListUsecase(repository)
   const controller: RegisterUserController = new RegisterUserController(usecase)
 
   return controller
