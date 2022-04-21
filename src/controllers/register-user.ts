@@ -1,5 +1,6 @@
 import { UserData } from '@/entities'
 import { RegisterUserOnMailingListUsecase } from '@/usecases'
+import { MissingParamError } from './errors'
 import { HttpRequest, HttpResponse } from './ports'
 import { badRequest, created } from './utils'
 
@@ -12,6 +13,13 @@ export class RegisterUserController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const userData: UserData = httpRequest.body
+
+    const requiredParams = ['name', 'email']
+    const missingParams = requiredParams.filter((_, idx) => !userData[requiredParams[idx]])
+    if (missingParams.length) {
+      return badRequest(new MissingParamError(missingParams.join(',')))
+    }
+
     const response = await this.usecase.perform(userData)
 
     if (response.isLeft()) {
