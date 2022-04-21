@@ -5,8 +5,7 @@ import { HttpRequest, HttpResponse } from '@/controllers/ports'
 import { UserData } from '@/entities'
 import { InvalidEmailError, InvalidNameError } from '@/entities/errors'
 import { RegisterUserOnMailingListUsecase } from '@/usecases'
-import { UserRepository } from '@/usecases/ports'
-import { Usecase } from '@/usecases/ports/usecase'
+import { Usecase, UserRepository } from '@/usecases/ports'
 
 const makeSut = (): RegisterUserController => {
   const users: UserData[] = []

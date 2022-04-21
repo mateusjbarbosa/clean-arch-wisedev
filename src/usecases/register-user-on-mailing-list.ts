@@ -3,7 +3,7 @@ import { InvalidEmailError, InvalidNameError } from '@/entities/errors'
 import { Either, left, right } from '@/shared'
 import { UserAlreadyExistsError } from '@/usecases/errors'
 import { UserRepository } from '@/usecases/ports'
-import { Usecase } from './ports/usecase'
+import { Usecase } from './ports'
 
 type UsecaseReturnType = Promise<Either<InvalidNameError | InvalidEmailError | UserAlreadyExistsError, UserData>>
 
