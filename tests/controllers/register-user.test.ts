@@ -94,11 +94,11 @@ describe('Register user web controller', () => {
   })
 
   it('should return a 400 when request with missing all data', async () => {
-    const requestWithMissingEmail: HttpRequest = {
+    const requestWithAllData: HttpRequest = {
       body: {}
     }
     const sut = makeSut()
-    const response: HttpResponse = await sut.handle(requestWithMissingEmail)
+    const response: HttpResponse = await sut.handle(requestWithAllData)
 
     expect(response.statusCode).toBe(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
