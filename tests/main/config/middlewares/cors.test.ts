@@ -1,7 +1,7 @@
 import { app } from '@/main/config'
 import request from 'supertest'
 
-describe('CORS middleware', () => {
+describe('CORS main middleware', () => {
   it('should enable CORS', async () => {
     app.get('/tests/cors', (_, res) => {
       res.send()
